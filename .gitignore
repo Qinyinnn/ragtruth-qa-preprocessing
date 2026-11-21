@@ -1,0 +1,17 @@
+# Python / environments
+__pycache__/
+*.pyc
+.venv/
+.env
+.cache/
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+
+# Generated datasets (~127 MB; regenerate with scripts/preprocess.py and
+# scripts/prepare_sentences.py). The small audit reports stay tracked so the
+# statistics are visible on GitHub and can be compared after regeneration.
+data/processed/*.jsonl

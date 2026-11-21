@@ -1,0 +1,438 @@
+{
+  "source_files": {
+    "train": "data/processed/qa_train.jsonl",
+    "val": "data/processed/qa_val.jsonl",
+    "test": "data/processed/qa_test.jsonl"
+  },
+  "output_files": {
+    "train": "data/processed/qa_train_sentences.jsonl",
+    "val": "data/processed/qa_val_sentences.jsonl",
+    "test": "data/processed/qa_test_sentences.jsonl"
+  },
+  "tokenizer": "MoritzLaurer/DeBERTa-v3-base-mnli-fever-anli",
+  "tokenizer_revision": "6f5cf0a2b59cabb106aca4c287eed12e357e90eb",
+  "environment": {
+    "python": "3.11.3",
+    "spacy": "3.8.18",
+    "transformers": "4.57.6",
+    "tokenizers": "0.22.2",
+    "sentencepiece": "0.2.3",
+    "numpy": "2.4.6"
+  },
+  "segmenter": "newline pre-split + spaCy sentencizer",
+  "token_limit": 512,
+  "special_tokens_per_pair": 3,
+  "pair_length_formula": "n_tokens(evidence) + n_tokens(response) + special_tokens_per_pair",
+  "pair_length_formula_verified_on_random_pairs": 3000,
+  "seed": 42,
+  "examples_processed": {
+    "train": 4260,
+    "val": 774,
+    "test": 900
+  },
+  "annotation_schema": {
+    "offset_convention": "0-based, end-exclusive character offsets into `output`",
+    "span_keys": [
+      "due_to_null",
+      "end",
+      "implicit_true",
+      "label_type",
+      "meta",
+      "start",
+      "text"
+    ],
+    "label_type_to_consistent_processed_label": {
+      "Evident Conflict": "evident_conflict",
+      "Subtle Conflict": "evident_conflict",
+      "Evident Baseless Info": "baseless_info",
+      "Subtle Baseless Info": "baseless_info"
+    },
+    "label_type_cooccurrence_with_processed_labels": {
+      "Evident Baseless Info": {
+        "examples": 1028,
+        "evident_conflict": 96,
+        "baseless_info": 1028
+      },
+      "Subtle Baseless Info": {
+        "examples": 611,
+        "evident_conflict": 56,
+        "baseless_info": 611
+      },
+      "Evident Conflict": {
+        "examples": 341,
+        "evident_conflict": 341,
+        "baseless_info": 119
+      },
+      "Subtle Conflict": {
+        "examples": 39,
+        "evident_conflict": 39,
+        "baseless_info": 18
+      }
+    }
+  },
+  "splits": {
+    "train": {
+      "examples": 4260,
+      "examples_by_quality": {
+        "good": 4135,
+        "incorrect_refusal": 106,
+        "truncated": 19
+      },
+      "response_label_positive_counts": {
+        "evident_conflict": 297,
+        "baseless_info": 1160
+      },
+      "evidence_sentences_per_example": {
+        "count": 4260,
+        "mean": 14.37,
+        "median": 14.0,
+        "p90": 22.0,
+        "p95": 24.0,
+        "p99": 30.0,
+        "max": 45,
+        "min": 3
+      },
+      "response_sentences_per_example": {
+        "count": 4260,
+        "mean": 7.12,
+        "median": 6.0,
+        "p90": 13.0,
+        "p95": 15.0,
+        "p99": 23.0,
+        "max": 52,
+        "min": 1
+      },
+      "evidence_sentence_tokens": {
+        "count": 61218,
+        "mean": 19.75,
+        "median": 17.0,
+        "p90": 36.0,
+        "p95": 46.0,
+        "p99": 73.0,
+        "max": 141,
+        "min": 1
+      },
+      "response_sentence_tokens": {
+        "count": 30336,
+        "mean": 20.43,
+        "median": 19.0,
+        "p90": 34.0,
+        "p95": 39.0,
+        "p99": 51.0,
+        "max": 107,
+        "min": 1
+      },
+      "evidence_x_response_pairs": {
+        "description": "every (evidence sentence, response sentence) pair; length = len(tok(evidence, response)) incl. special tokens",
+        "distribution": {
+          "count": 466813,
+          "mean": 42.32,
+          "median": 39.0,
+          "p90": 64.0,
+          "p95": 74.0,
+          "p99": 101.0,
+          "max": 208,
+          "min": 6
+        },
+        "histogram": {
+          "0-63": 418555,
+          "64-127": 47118,
+          "128-255": 1140,
+          "256-383": 0,
+          "384-511": 0,
+          "512-767": 0,
+          "768-1023": 0,
+          "1024-2047": 0,
+          ">=2048": 0
+        },
+        "n_over_limit": 0,
+        "pct_over_limit": 0.0,
+        "examples_with_any_pair_over_limit": 0
+      },
+      "full_context_x_response_sentence_pairs": {
+        "description": "reference only: (full context, one response sentence); shows that sentence-splitting the response alone does not remove truncation",
+        "distribution": {
+          "count": 30336,
+          "mean": 321.68,
+          "median": 320.0,
+          "p90": 455.0,
+          "p95": 488.0,
+          "p99": 534.0,
+          "max": 635,
+          "min": 100
+        },
+        "n_over_limit": 615,
+        "pct_over_limit": 2.0273
+      },
+      "single_sentences_over_limit": {
+        "evidence": 0,
+        "response": 0
+      },
+      "span_mapping": {
+        "original_spans": 2335,
+        "spans_by_label_type": {
+          "Evident Baseless Info": 1228,
+          "Subtle Baseless Info": 736,
+          "Evident Conflict": 325,
+          "Subtle Conflict": 46
+        },
+        "spans_overlapping_multiple_sentences": 403,
+        "multi_sentence_spans_by_label_type": {
+          "Evident Baseless Info": 296,
+          "Subtle Baseless Info": 72,
+          "Evident Conflict": 28,
+          "Subtle Conflict": 7
+        },
+        "response_sentences_total": 30336,
+        "response_sentences_with_any_span_overlap": 3156,
+        "response_sentences_in_positive_examples_without_overlap": 9018
+      }
+    },
+    "val": {
+      "examples": 774,
+      "examples_by_quality": {
+        "good": 757,
+        "truncated": 4,
+        "incorrect_refusal": 13
+      },
+      "response_label_positive_counts": {
+        "evident_conflict": 53,
+        "baseless_info": 185
+      },
+      "evidence_sentences_per_example": {
+        "count": 774,
+        "mean": 13.36,
+        "median": 13.0,
+        "p90": 20.0,
+        "p95": 23.0,
+        "p99": 33.0,
+        "max": 34,
+        "min": 3
+      },
+      "response_sentences_per_example": {
+        "count": 774,
+        "mean": 6.99,
+        "median": 6.0,
+        "p90": 12.0,
+        "p95": 15.0,
+        "p99": 20.0,
+        "max": 36,
+        "min": 1
+      },
+      "evidence_sentence_tokens": {
+        "count": 10338,
+        "mean": 20.82,
+        "median": 17.0,
+        "p90": 37.0,
+        "p95": 48.0,
+        "p99": 85.0,
+        "max": 140,
+        "min": 1
+      },
+      "response_sentence_tokens": {
+        "count": 5407,
+        "mean": 20.58,
+        "median": 19.0,
+        "p90": 33.0,
+        "p95": 38.0,
+        "p99": 51.0,
+        "max": 109,
+        "min": 2
+      },
+      "evidence_x_response_pairs": {
+        "description": "every (evidence sentence, response sentence) pair; length = len(tok(evidence, response)) incl. special tokens",
+        "distribution": {
+          "count": 78125,
+          "mean": 43.03,
+          "median": 40.0,
+          "p90": 65.0,
+          "p95": 75.0,
+          "p99": 108.0,
+          "max": 223,
+          "min": 7
+        },
+        "histogram": {
+          "0-63": 69728,
+          "64-127": 8132,
+          "128-255": 265,
+          "256-383": 0,
+          "384-511": 0,
+          "512-767": 0,
+          "768-1023": 0,
+          "1024-2047": 0,
+          ">=2048": 0
+        },
+        "n_over_limit": 0,
+        "pct_over_limit": 0.0,
+        "examples_with_any_pair_over_limit": 0
+      },
+      "full_context_x_response_sentence_pairs": {
+        "description": "reference only: (full context, one response sentence); shows that sentence-splitting the response alone does not remove truncation",
+        "distribution": {
+          "count": 5407,
+          "mean": 313.83,
+          "median": 292.0,
+          "p90": 448.0,
+          "p95": 492.0,
+          "p99": 513.0,
+          "max": 561,
+          "min": 131
+        },
+        "n_over_limit": 56,
+        "pct_over_limit": 1.0357
+      },
+      "single_sentences_over_limit": {
+        "evidence": 0,
+        "response": 0
+      },
+      "span_mapping": {
+        "original_spans": 357,
+        "spans_by_label_type": {
+          "Evident Baseless Info": 178,
+          "Evident Conflict": 68,
+          "Subtle Baseless Info": 108,
+          "Subtle Conflict": 3
+        },
+        "spans_overlapping_multiple_sentences": 64,
+        "multi_sentence_spans_by_label_type": {
+          "Evident Baseless Info": 53,
+          "Subtle Baseless Info": 9,
+          "Evident Conflict": 2
+        },
+        "response_sentences_total": 5407,
+        "response_sentences_with_any_span_overlap": 474,
+        "response_sentences_in_positive_examples_without_overlap": 1434
+      }
+    },
+    "test": {
+      "examples": 900,
+      "examples_by_quality": {
+        "good": 875,
+        "incorrect_refusal": 24,
+        "truncated": 1
+      },
+      "response_label_positive_counts": {
+        "evident_conflict": 26,
+        "baseless_info": 138
+      },
+      "evidence_sentences_per_example": {
+        "count": 900,
+        "mean": 13.97,
+        "median": 13.0,
+        "p90": 21.0,
+        "p95": 23.0,
+        "p99": 27.0,
+        "max": 28,
+        "min": 4
+      },
+      "response_sentences_per_example": {
+        "count": 900,
+        "mean": 6.3,
+        "median": 5.0,
+        "p90": 11.0,
+        "p95": 14.0,
+        "p99": 19.00999999999999,
+        "max": 29,
+        "min": 1
+      },
+      "evidence_sentence_tokens": {
+        "count": 12570,
+        "mean": 20.35,
+        "median": 17.0,
+        "p90": 37.0,
+        "p95": 49.0,
+        "p99": 81.61999999999898,
+        "max": 170,
+        "min": 1
+      },
+      "response_sentence_tokens": {
+        "count": 5666,
+        "mean": 21.18,
+        "median": 20.0,
+        "p90": 35.0,
+        "p95": 40.0,
+        "p99": 51.0,
+        "max": 124,
+        "min": 2
+      },
+      "evidence_x_response_pairs": {
+        "description": "every (evidence sentence, response sentence) pair; length = len(tok(evidence, response)) incl. special tokens",
+        "distribution": {
+          "count": 83236,
+          "mean": 43.75,
+          "median": 41.0,
+          "p90": 66.0,
+          "p95": 77.0,
+          "p99": 108.0,
+          "max": 233,
+          "min": 6
+        },
+        "histogram": {
+          "0-63": 73637,
+          "64-127": 9244,
+          "128-255": 355,
+          "256-383": 0,
+          "384-511": 0,
+          "512-767": 0,
+          "768-1023": 0,
+          "1024-2047": 0,
+          ">=2048": 0
+        },
+        "n_over_limit": 0,
+        "pct_over_limit": 0.0,
+        "examples_with_any_pair_over_limit": 0
+      },
+      "full_context_x_response_sentence_pairs": {
+        "description": "reference only: (full context, one response sentence); shows that sentence-splitting the response alone does not remove truncation",
+        "distribution": {
+          "count": 5666,
+          "mean": 316.15,
+          "median": 301.0,
+          "p90": 450.5,
+          "p95": 478.75,
+          "p99": 545.0,
+          "max": 578,
+          "min": 148
+        },
+        "n_over_limit": 131,
+        "pct_over_limit": 2.312
+      },
+      "single_sentences_over_limit": {
+        "evidence": 0,
+        "response": 0
+      },
+      "span_mapping": {
+        "original_spans": 235,
+        "spans_by_label_type": {
+          "Evident Baseless Info": 156,
+          "Evident Conflict": 30,
+          "Subtle Baseless Info": 49
+        },
+        "spans_overlapping_multiple_sentences": 52,
+        "multi_sentence_spans_by_label_type": {
+          "Evident Baseless Info": 44,
+          "Evident Conflict": 1,
+          "Subtle Baseless Info": 7
+        },
+        "response_sentences_total": 5666,
+        "response_sentences_with_any_span_overlap": 364,
+        "response_sentences_in_positive_examples_without_overlap": 1028
+      }
+    }
+  },
+  "all_splits_pairs_over_limit": {
+    "n_pairs": 628174,
+    "n_over_limit": 0,
+    "pct_over_limit": 0.0
+  },
+  "validation": {
+    "passed": true,
+    "issue_counts": {},
+    "fatal_issue_counts": {},
+    "informational": {
+      "span_partially_covers_sentence": 1652,
+      "span_crosses_sentence_boundary": 519
+    },
+    "issue_examples": []
+  }
+}
