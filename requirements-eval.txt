@@ -1,0 +1,8 @@
+# Reuse the preprocessing environment
+-r requirements-lock.txt
+
+# Frozen NLI inference
+torch
+
+# Milestone metrics and visualizations
+matplotlib

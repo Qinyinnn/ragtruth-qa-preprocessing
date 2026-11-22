@@ -35,6 +35,21 @@ The first run downloads the dataset and tokenizers from Hugging Face. No PyTorch
 
 **Note:** Generated JSONL datasets (~127 MB) are excluded from GitHub. Run the scripts above to reproduce them locally. Both audit reports are included in the repository.
 
+### Run the frozen NLI baseline
+
+```bash
+python scripts/evaluate_nli_baseline.py
+python scripts/aggregate_nli_baseline.py
+```
+
+### Generate milestone metrics and figures
+
+```bash
+python scripts/metrics_report.py
+```
+
+Raw model predictions and generated datasets are excluded from Git. Final metrics and report figures may be committed.
+
 ## 2. Key Findings & Preprocessing Decisions
 
 | Finding                                                   | Decision                                                                  |
@@ -45,6 +60,12 @@ The first run downloads the dataset and tokenizers from Hugging Face. No PyTorch
 | Original annotations contain four hallucination types     | Retained the two processed binary labels and verified their mapping       |
 | Some hallucination spans cross sentence boundaries        | Preserved original character offsets and recorded sentence overlaps       |
 | Multiple responses share the same source                  | Used source-grouped validation splitting to reduce leakage                |
+| Sentence-level labels can be derived from original hallucination spans | Used span overlaps to derive labels without modifying the original ground truth |
+| Only 30 of 41,409 QA sentences (0.072%) contain both hallucination types | Retained multi-label ground truth; evaluated three-class NLI as an approximation |
+| NLI inference requires combining predictions across evidence sentences | Compared max-score and support-first aggregation on validation data |
+
+For detailed label definitions, aggregation methods, and evaluation
+protocols, see [Evaluation Methodology](docs/evaluation_methodology.md).
 
 ### Dataset Splits
 
@@ -174,7 +195,23 @@ The repository includes two reference reports:
 
 Compare regenerated reports with these references to confirm reproducibility.
 
-## 7. References
+
+## 7. Evaluation Methodology
+
+All models are evaluated on the same QA validation and test
+splits using the original response-level multi-label targets:
+`[evident_conflict, baseless_info]`.
+
+The majority-class and length-only logistic regression baselines
+operate directly at response level.
+
+The frozen NLI-DeBERTa baseline uses sentence-level inference
+and aggregates predictions back to response level for comparison.
+
+See [Evaluation Methodology](docs/evaluation_methodology.md)
+for label definitions, aggregation rules, and evaluation details.
+
+## 8. References
 
 - [RAGTruth-processed Dataset](https://huggingface.co/datasets/wandb/RAGTruth-processed)
 - [Original RAGTruth Dataset](https://github.com/ParticleMedia/RAGTruth)

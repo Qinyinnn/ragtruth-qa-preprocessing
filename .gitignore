@@ -15,3 +15,10 @@ __pycache__/
 # scripts/prepare_sentences.py). The small audit reports stay tracked so the
 # statistics are visible on GitHub and can be compared after regeneration.
 data/processed/*.jsonl
+
+# Model inference outputs (expensive to regenerate; keep locally)
+results/**/*.jsonl
+results/**/debug_*.json
+
+# Large generated error-analysis files
+results/**/error_cases.csv
